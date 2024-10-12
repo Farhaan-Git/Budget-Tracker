@@ -21,13 +21,13 @@ public class RoleRegisterController {
     @PostMapping("/customerregister")
     public ResponseEntity<Object> customerRegistration(@RequestBody CustomerModel customerModel, @RequestHeader("Authorization") String token){
 
-        return roleRegisterService.saveCustomer(token,customerModel);
+        return roleRegisterService.saveCustomer(token.replace("Bearer",""),customerModel);
     }
 
     @PostMapping("/shopregister")
     public ResponseEntity<Object> shopRegistration(@RequestBody ShopModel shopModel, @RequestHeader("Authorization") String token) {
 
-        return roleRegisterService.saveShop(token, shopModel);
+        return roleRegisterService.saveShop(token.substring(7), shopModel);
 
     }
 }

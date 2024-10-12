@@ -8,6 +8,7 @@ import com.farhaan.budgettracker.repository.ShopRepository;
 import com.farhaan.budgettracker.util.ResponseUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class RoleRegisterService {
     private final ShopRepository shopRepository;
 
     public ResponseEntity<Object> saveCustomer(String token, CustomerModel customerModel) {
-        long userId = Long.parseLong(jwtService.extractClaim(token, Claims::getId));
+        long userId = jwtService.extractAllClaims(token).get("Id", Long.class);
         customerModel.setUserId(userId);
         customerRepository.save(customerModel);
         return ResponseUtil.getResponse("Customer Registered successfully", HttpStatus.OK);
@@ -32,7 +33,7 @@ public class RoleRegisterService {
 
 
     public ResponseEntity<Object> saveShop(String token, ShopModel shopModel) {
-        long userId = Long.parseLong(jwtService.extractClaim(token, Claims::getId));
+        long userId = jwtService.extractAllClaims(token).get("Id", Long.class);
         shopModel.setUserId(userId);
         shopRepository.save(shopModel);
         return ResponseUtil.getResponse("Shop details Registered successfully", HttpStatus.OK);

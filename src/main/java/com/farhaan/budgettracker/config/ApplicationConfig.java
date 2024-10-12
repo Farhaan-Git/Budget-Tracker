@@ -1,7 +1,9 @@
 package com.farhaan.budgettracker.config;
 
 import com.farhaan.budgettracker.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,5 +44,10 @@ public class ApplicationConfig {
         authprovider.setUserDetailsService(userDetailsService());
         authprovider.setPasswordEncoder(passwordEncoder());
         return authprovider;
+    }
+
+    @Bean
+    public ModelMapper modelMapperProvider(){
+        return new ModelMapper();
     }
 }

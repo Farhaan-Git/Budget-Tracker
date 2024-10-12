@@ -20,6 +20,8 @@ public class JwtService {
 
     private static final String SECRET_KEY = "saero44ijvns464654sdf465wef654sg6+ersfd634sd65f984";
 
+    private static final int EXPIRATION_TIME = 432_000_000;
+
     public String generateToken(User userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role",userDetails.getRole());
@@ -33,7 +35,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 *24)))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
