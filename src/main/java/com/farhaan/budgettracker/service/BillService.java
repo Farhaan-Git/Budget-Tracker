@@ -7,6 +7,7 @@ import com.farhaan.budgettracker.model.CustomerBillModel;
 import com.farhaan.budgettracker.model.CustomerModel;
 import com.farhaan.budgettracker.repository.BillRepository;
 import com.farhaan.budgettracker.repository.CustomerRepository;
+import com.farhaan.budgettracker.repository.UserRepository;
 import com.farhaan.budgettracker.util.ListToJsonconverter;
 import com.farhaan.budgettracker.util.ResponseUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +36,8 @@ public class BillService {
 
     private final ModelMapper modelMapper;
 
+    private final UserRepository userRepository;
+
     public ResponseEntity<Object> addNewBill(String token, CustomerBillDto customerBill)  {
         Logger logger = LoggerFactory.getLogger(BillService.class);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -42,6 +45,8 @@ public class BillService {
         Optional<CustomerModel> customerModel =  customerRepository.findByUserId(userId);
         long customerId = customerModel.get().getCustomerId();
         customerBill.setCustomerId(customerId);
+        Optional<String> userName = userRepository.getUsernameByUserId(userId);
+        customerBill.setCustomerUsername(userName.get());
         logger.info("before convertion:\n"+customerBill.toString());
         CustomerBillModel bill = modelMapper.map(customerBill,CustomerBillModel.class);
         bill.setItemsList(ListToJsonconverter.convertToString(customerBill.getItemsList()));

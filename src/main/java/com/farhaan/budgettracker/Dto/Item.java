@@ -16,6 +16,6 @@ import lombok.NoArgsConstructor;
 public class Item {
     private String name;
     private double price;
-    private short quantity;
+    private short quantity = 1;
 
 }
